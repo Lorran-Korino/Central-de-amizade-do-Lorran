@@ -223,6 +223,23 @@
     transform: scale(1.05);
 }
 
+/* TRANSIÇÃO ENTRE TELAS */
+#tela > *:not(.final) {
+    animation: aparecer 0.4s ease both;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
     </style>
 </head>
 
@@ -233,6 +250,25 @@
     <script>
 
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxSG4kJDeafRHc3VwMnkSXEGrw7DBWse3olM4ofTl7I5-8ZkJxpEWR1G_qmOfDq0q9c/exec";
+
+// MAPA DE SONS DOS BOTÕES
+const sonsDosBotoes = {
+    "Preciso de ajuda! 🧡": "mp3/ajuda.mp3",
+    "Enviar carinho 🤍": "mp3/carinho.mp3",
+    "Fazer reclamação 😡": "mp3/reclamacao.mp3"
+};
+
+// TOCAR O SOM DO BOTÃO CLICADO
+function tocarSom(textoDoBotao) {
+    const arquivo = sonsDosBotoes[textoDoBotao];
+
+    if (!arquivo) {
+        return;
+    }
+
+    const som = new Audio(arquivo);
+    som.play();
+}
 
         // NOSSA PRIMEIRA TELA
         function mostrarPergunta(texto, opcoes) {
@@ -404,7 +440,7 @@ async function enviarReclamacao(event) {
             })
         });
 
-        alert("Reclamação enviada! Obrigado por participar.");
+        alert("Reclamação enviada! Senta lá e godrink.");
 
         document.getElementById("nomeReclamacao").value = "";
         document.getElementById("reclamacao").value = "";
@@ -420,7 +456,7 @@ async function enviarReclamacao(event) {
     }
 }
 
- function telaInicial() {
+function telaInicial() {
     const tela = document.getElementById("tela");
 
     tela.innerHTML = `
@@ -429,15 +465,15 @@ async function enviarReclamacao(event) {
         </h1>
 
         <div class="botoes">
-            <button onclick="inicio()">
+            <button onclick="tocarSom('Preciso de ajuda! 🧡'); inicio()">
                 Preciso de ajuda! 🧡
             </button>
 
-            <button onclick="mostrarFinal('Então me manda um pix: 15134150699')">
+            <button onclick="tocarSom('Enviar carinho 🤍'); mostrarFinal('Então me manda um pix: 15134150699')">
                 Enviar carinho 🤍
             </button>
 
-            <button class="botao-reclamacao" onclick="telaReclamacao()">
+            <button class="botao-reclamacao" onclick="tocarSom('Fazer reclamação 😡'); telaReclamacao()">
                 Fazer reclamação 😡
             </button>
         </div>
